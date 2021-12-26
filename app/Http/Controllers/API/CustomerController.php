@@ -15,7 +15,7 @@ class CustomerController extends BaseController
 {
     public function myOrders(){
 
-        $orders = Order::where('customer_id',Auth::user()->id)->with('orderHistory')->get();
+        $orders = Order::where('customer_id',Auth::user()->id)->with('orderHistory')->orderby('id','desc')->get();
         return $this->sendResponse(OrderResource::collection($orders), 'Customers Orders.');
     }
 }

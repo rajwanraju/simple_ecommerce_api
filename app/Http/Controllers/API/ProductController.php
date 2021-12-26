@@ -103,11 +103,29 @@ class ProductController extends BaseController
         File::makeDirectory(public_path('/storage/products'),777,true);
     }
 
-    $image = $request->input('image');
-    $png_url = "product-".time().".png";
-    $path = public_path('/storage/products/') . $png_url;
+    if( $request->file('image')) {
 
-    Image::make(file_get_contents($image))->save($path);  
+
+
+        $image = $request->file('image');
+        $png_url = "product-".time().".png";
+        
+        
+        $img = Image::make($image->path());
+        $img->resize(800, 800)->save($path.'/'.$png_url);
+        
+    }
+    else{
+
+        $image = $request->input('image');
+        $png_url = "product-".time().".png";
+        $path = public_path('/storage/products/') . $png_url;
+
+        Image::make(file_get_contents($image))->save($path);  
+
+    }
+
+
     return response()->json([
         "success" => true,
         "message" => "File successfully uploaded",

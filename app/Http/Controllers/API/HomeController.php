@@ -21,7 +21,7 @@ class HomeController extends BaseController
        public function search($keywords)
     {
 
-        $results = Product::where('name', 'LIKE', "%{$keywords}%")->latest()->take(10)->get();
+        $results = Product::where('name', 'LIKE','%'.$keywords.'%')->latest()->take(10)->get();
        
          return $this->sendResponse(ProductResource::collection($results),'Products retrieved successfully.');
     }

@@ -16,7 +16,7 @@ class Product extends JsonResource
             'detail' => $this->detail,
             'image' => '/storage/products/'.$this->image,
             'price' => $this->price,
-            'quantity' => $this->quantity,
+            'stock' => $this->quantity,
             'created_at' => $this->created_at->format('d/m/Y'),
             'updated_at' => $this->updated_at->format('d/m/Y'),
         ];

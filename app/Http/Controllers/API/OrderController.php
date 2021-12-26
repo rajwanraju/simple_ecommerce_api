@@ -110,30 +110,36 @@ public function update(Request $request, $id)
 {
     $mainOrder = Order::where('order_id',$id)->first();
    $order = Order::where('order_id',$id)->first();
+   $order->name = $request->name;
    $order->phone_number = $request->phone;
    $order->shipping_address = $request->address;
    $order->save();
 
-
-if($mainOrder->phone_number != $request->phone){
-
+if($request->name != $mainOrder->name){
     $orderHistory = new OrderHistory();
-    $orderHistory->orderId = $id;
+    $orderHistory->order_id = $order->id;
     $orderHistory->edit_by = Auth::user()->name;
     $orderHistory->edit_at = 'phone_number';
     $orderHistory->edit_value = $request->phone;
     $orderHistory->save();
 }
-if($mainOrder->shipping_address != $request->address){
-
+if($request->phone != $mainOrder->phone_number){
     $orderHistory = new OrderHistory();
-    $orderHistory->orderId = $id;
+    $orderHistory->order_id = $order->id;
+    $orderHistory->edit_by = Auth::user()->name;
+    $orderHistory->edit_at = 'phone_number';
+    $orderHistory->edit_value = $request->phone;
+    $orderHistory->save();
+}
+
+if($request->address != $mainOrder->shipping_address){
+    $orderHistory = new OrderHistory();
+    $orderHistory->order_id = $order->id;
     $orderHistory->edit_by = Auth::user()->name;
     $orderHistory->edit_at = 'shipping_address';
     $orderHistory->edit_value = $request->address;
     $orderHistory->save();
 }
-
 
    return $this->sendResponse(new OrderResource($order), 'Order Update Successfully.');
 }
